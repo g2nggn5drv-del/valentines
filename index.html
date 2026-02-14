@@ -1,47 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Important Question 😌</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day Experience</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main class="card" id="card">
-    <div class="badge">⚠️ Mission: Valentine</div>
-
-    <h1>Hey you 💗</h1>
-    <p class="question">Will you be my Valentine?</p>
-
-    <div class="meter">
-      <div class="meter-label">
-        <span>Chance you say "Yes"</span>
-        <strong id="chance">72%</strong>
-      </div>
-      <div class="bar">
-        <div class="fill" id="fill" style="width:72%"></div>
-      </div>
+    <div class="greeting-screen">
+        <h1>Welcome to the Valentine's Day Experience!</h1>
+        <p>Get ready to experience a romantic day filled with love and joy.</p>
+        <button id="start">Start</button>
     </div>
 
-    <p class="subtitle" id="subtitle">Choose wisely… I trained for this.</p>
-
-    <div class="buttons" id="buttons">
-      <button id="yesBtn" class="yes">Yes 💘</button>
-      <button id="noBtn" class="no">No 🙃</button>
+    <div class="original-question">
+        <h2>Question of the Day:</h2>
+        <p>What is your idea of the perfect Valentine's Day?</p>
+        <textarea id="user-response" rows="4" cols="50" placeholder="Share your thoughts..."></textarea>
+        <button id="submit-response">Submit</button>
     </div>
 
-    <p id="result" class="result" aria-live="polite"></p>
-
-    <div id="final" class="final hidden">
-      <h2>WOOO!!! 🥳💞</h2>
-      <p class="finalText">
-        You just made me the happiest human. <br />
-        Valentine's plan: <strong>Dinner + dessert + your choice after 😌</strong>
-      </p>
-      <button id="againBtn" class="again">Replay the chaos 🔁</button>
+    <div class="virtual-date-question">
+        <h2>Virtual Date:</h2>
+        <p>If you could choose any place in the world for a romantic date, where would it be?</p>
+        <textarea id="date-response" rows="4" cols="50" placeholder="Your dream date location..."></textarea>
+        <button id="submit-date">Submit</button>
     </div>
-  </main>
 
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
