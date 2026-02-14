@@ -1,24 +1,41 @@
-body {
-    background: linear-gradient(to right, #ff7e7e, #ffb3b3);
-    color: #fff;
-    font-family: 'Arial', sans-serif;
-    text-align: center;
+.container {
+  background: linear-gradient(to right, #ff758c, #ff7eb3);
+  animation: fadeIn 2s;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  padding: 20px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 h1, h2, h3 {
-    font-family: 'Cupid', cursive;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  color: #ffffff;
 }
 
-button {
-    background-color: #ff5c5c;
-    border: none;
-    color: white;
-    padding: 15px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 5px;
+p {
+  line-height: 1.6;
+  color: #ffffff;
+}
+
+.button {
+  background-color: #ff7eb3;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition: background-color 0.3s;
+  border-radius: 12px;
+}
+
+.button:hover {
+  background-color: #ff758c;
 }
