@@ -1,107 +1,78 @@
-const yesBtn = document.getElementById("yesBtn");
-const noBtn = document.getElementById("noBtn");
-const result = document.getElementById("result");
-const subtitle = document.getElementById("subtitle");
-const chanceText = document.getElementById("chance");
-const fill = document.getElementById("fill");
-const finalScreen = document.getElementById("final");
-const buttons = document.getElementById("buttons");
-const againBtn = document.getElementById("againBtn");
+// script.js 
 
-let noCount = 0;
-let chance = 72;
+// Greeting Stage
+function greetingStage() {
+    const greetingMessage = document.createElement('div');
+    greetingMessage.innerText = "Happy Valentine's Day! Are you ready for a fun date?";
+    document.body.appendChild(greetingMessage);
 
-const noLines = [
-  "No? Bold. 😭",
-  "That button seems… broken. 🛠️",
-  "You’re really gonna do me like that? 🥺",
-  "Plot twist: you meant YES. 😌",
-  "Okay you’re just here for the mini-game 😂",
-  "Final boss activated. 🎮"
-];
-
-function setChance(newChance) {
-  chance = Math.max(1, Math.min(99, newChance));
-  chanceText.textContent = `${chance}%`;
-  fill.style.width = `${chance}%`;
+    setTimeout(() => {
+        document.body.removeChild(greetingMessage);
+        originalQuestionStage();
+    }, 3000); // show greeting for 3 seconds
 }
 
-function moveNoButton() {
-  noCount++;
-
-  // Make it harder to say no 😌
-  setChance(chance + 6);
-
-  // Make YES more irresistible
-  const scale = 1 + Math.min(0.35, noCount * 0.07);
-  yesBtn.style.transform = `scale(${scale})`;
-
-  result.textContent = noLines[Math.min(noCount - 1, noLines.length - 1)];
-
-  // Random position inside the buttons container
-  const rect = buttons.getBoundingClientRect();
-  const maxX = rect.width - noBtn.offsetWidth;
-  const maxY = rect.height - noBtn.offsetHeight;
-
-  const x = Math.floor(Math.random() * Math.max(1, maxX));
-  const y = Math.floor(Math.random() * Math.max(1, maxY));
-
-  noBtn.style.left = x + "px";
-  noBtn.style.top = y + "px";
-
-  // extra fun subtitle changes
-  const subtitles = [
-    "Choose wisely… I trained for this.",
-    "This is getting competitive.",
-    "Your mouse is fast but my love is faster.",
-    "Okay okay… I respect the grind.",
-    "Just press YES and we both win."
-  ];
-  subtitle.textContent = subtitles[Math.min(noCount, subtitles.length - 1)];
+// Original Valentine's Question Stage
+function originalQuestionStage() {
+    const questionDiv = document.createElement('div');
+    questionDiv.innerText = "Will you be my Valentine?";
+    
+    const noButton = document.createElement('button');
+    noButton.innerText = "No!";
+    noButton.style.position = 'absolute';
+    moveButton(noButton, questionDiv);
+    
+    questionDiv.appendChild(noButton);
+    document.body.appendChild(questionDiv);
 }
 
-function confettiEmojis() {
-  for (let i = 0; i < 30; i++) {
-    const s = document.createElement("span");
-    s.textContent = ["💖","✨","💘","🌹","💕","🥳"][Math.floor(Math.random()*6)];
-    s.style.position = "fixed";
-    s.style.left = Math.random() * 100 + "vw";
-    s.style.top = "-10px";
-    s.style.fontSize = (18 + Math.random()*18) + "px";
-    s.style.transition = "transform 1.2s linear, opacity 1.2s linear";
-    document.body.appendChild(s);
+// Function to move button across page
+function moveButton(button, questionDiv) {
+    let direction = 1; // 1 for right, -1 for left
+    const moveInterval = setInterval(() => {
+        if (button.offsetLeft > window.innerWidth - button.offsetWidth || button.offsetLeft < 0) {
+            direction *= -1; // change direction
+        }
+        button.style.left = (button.offsetLeft + 5 * direction) + 'px';
+    }, 50);
+    
+    button.onclick = () => {
+        clearInterval(moveInterval);
+        document.body.removeChild(questionDiv);
+        transitionStage();
+    };
+}
 
-    requestAnimationFrame(() => {
-      s.style.transform = `translateY(${115 + Math.random()*20}vh) rotate(${Math.random()*720}deg)`;
-      s.style.opacity = "0";
+// Transition Stage
+function transitionStage() {
+    const transitionMessage = document.createElement('div');
+    transitionMessage.innerText = "Great! Let's see how well you know me!";
+    document.body.appendChild(transitionMessage);
+
+    setTimeout(() => {
+        document.body.removeChild(transitionMessage);
+        virtualDateQuestionStage();
+    }, 3000); // show transition for 3 seconds
+}
+
+// Virtual Date Question Stage
+function virtualDateQuestionStage() {
+    const dateQuestion = document.createElement('div');
+    dateQuestion.innerText = "What would be your ideal date?";
+
+    const options = ["Dinner", "Movie", "Walk in the park", "Home Cooked Meal"];
+    options.forEach(option => {
+        const button = document.createElement('button');
+        button.innerText = option;
+        button.onclick = () => {
+            alert(`You selected: ${option}`);
+            document.body.removeChild(dateQuestion);
+        };
+        dateQuestion.appendChild(button);
     });
 
-    setTimeout(() => s.remove(), 1300);
-  }
+    document.body.appendChild(dateQuestion);
 }
 
-noBtn.addEventListener("mouseenter", moveNoButton);
-noBtn.addEventListener("click", moveNoButton);
-
-yesBtn.addEventListener("click", () => {
-  result.textContent = "";
-  subtitle.textContent = "Correct choice 😌💞";
-  buttons.classList.add("hidden");
-  finalScreen.classList.remove("hidden");
-  confettiEmojis();
-});
-
-againBtn.addEventListener("click", () => {
-  // Reset everything
-  noCount = 0;
-  setChance(72);
-  yesBtn.style.transform = "scale(1)";
-  result.textContent = "";
-  subtitle.textContent = "Choose wisely… I trained for this.";
-  finalScreen.classList.add("hidden");
-  buttons.classList.remove("hidden");
-
-  // Put NO back in its corner
-  noBtn.style.left = "";
-  noBtn.style.top = "";
-});
+// Start the interactive experience
+greetingStage();
