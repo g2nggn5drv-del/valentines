@@ -1,93 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valentine's Game</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        button { padding: 10px 20px; margin: 20px; }
-        #noButton { position: relative; }
-        #movingNo { animation: move 3s infinite alternate; }
-        @keyframes move {
-            0% { left: 0; }
-            100% { left: calc(100% - 120px); }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Valentine's Experience</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- STAGE 1: Greeting -->
+  <div id="stage1" class="stage-container">
+    <main class="card">
+      <div class="badge">💕 Valentine's Day</div>
+      <h1>Hello my love 💗</h1>
+      <p class="question">Are you ready to play a game?</p>
+      <p class="subtitle">This will be fun, I promise... 😊</p>
+      
+      <div class="buttons" id="stage1-buttons">
+        <button id="stage1-yes" class="yes">Yes, Let's Go! 🎮</button>
+        <button id="stage1-no" class="no" style="position: absolute; right: 8px; top: 10px;">Hmm, Not Now 🙃</button>
+      </div>
+      
+      <p id="stage1-result" class="result"></p>
+    </main>
+  </div>
 
-    <div id="stage1">
-        <h1>Hello my love, are you ready to play a game?</h1>
-        <button onclick="nextStage(1)">Yes</button>
-        <button onclick="nextStage(1)">No</button>
-    </div>
+  <!-- STAGE 2: Original Valentine's Question -->
+  <div id="stage2" class="stage-container hidden">
+    <main class="card">
+      <div class="badge">⚠️ Mission: Valentine</div>
+      <h1>Hey you 💗</h1>
+      <p class="question">Will you be my Valentine?</p>
 
-    <div id="stage2" style="display:none;">
-        <h2>Will you be my Valentine?</h2>
-        <button id="yesButton" onclick="nextStage(2)">Yes</button>
-        <button id="movingNo" onmouseover="moveNoButton()">No</button>
-        <div id="meter">Percentage Meter: <span id="percentage">0</span>%</div>
-        <div id="funMessage"></div>
-    </div>
+      <div class="meter">
+        <div class="meter-label">
+          <span>Chance you say "Yes"</span>
+          <strong id="chance">72%</strong>
+        </div>
+        <div class="bar">
+          <div class="fill" id="fill" style="width:72%"></div>
+        </div>
+      </div>
 
-    <div id="stage3" style="display:none;">
-        <h3>Well since it's Valentine's day today, I'd like to ask you another question</h3>
-        <button onclick="nextStage(3)">Continue</button>
-    </div>
+      <p class="subtitle" id="subtitle">Choose wisely… I trained for this.</p>
 
-    <div id="stage4" style="display:none;">
-        <h4>Will you be so kind to accompany me on a virtual date TODAY at 8pm your time? :)</h4>
-        <button onclick="nextStage(4)">Yes</button>
-        <button id="noButton" onmouseover="moveNoButton()">No</button>
-        <div id="dateMeter">Percentage Meter: <span id="datePercentage">0</span>%</div>
-    </div>
+      <div class="buttons" id="buttons">
+        <button id="yesBtn" class="yes">Yes 💘</button>
+        <button id="noBtn" class="no">No 🙃</button>
+      </div>
 
-    <div id="celebration" style="display:none;">
-        <h1>🎉 Celebration Time! 🎉</h1>
-        <p>Thank you for saying yes to the date!</p>
-        <div>🎊🎊🎊 Confetti Here 🎊🎊🎊</div>
-    </div>
+      <p id="result" class="result" aria-live="polite"></p>
+    </main>
+  </div>
 
-    <script>
-        let percentage = 0;
+  <!-- STAGE 3: Transition Message -->
+  <div id="stage3" class="stage-container hidden">
+    <main class="card">
+      <div class="badge">🎉 You Said Yes!</div>
+      <h1>Amazing! 🥳</h1>
+      <p class="question">Well since it's Valentine's day today...</p>
+      <p class="subtitle">I'd like to ask you another question 💕</p>
+      
+      <button id="stage3-continue" class="yes" style="margin-top: 20px;">Continue 💫</button>
+    </main>
+  </div>
 
-        function nextStage(stage) {
-            if (stage === 2) {
-                document.getElementById('stage1').style.display = 'none';
-                document.getElementById('stage2').style.display = 'block';
-            }
-            if (stage === 3) {
-                document.getElementById('stage2').style.display = 'none';
-                document.getElementById('stage3').style.display = 'block';
-            }
-            if (stage === 4) {
-                document.getElementById('stage3').style.display = 'none';
-                document.getElementById('stage4').style.display = 'block';
-            }
-            if (stage === 5) {
-                document.getElementById('stage4').style.display = 'none';
-                document.getElementById('celebration').style.display = 'block';
-            }
-            if (stage === 1) {
-                percentage += 20;
-                document.getElementById('percentage').innerText = percentage;
-                document.getElementById('datePercentage').innerText = percentage;
-                if (percentage >= 100) {
-                    alert('You reached 100%!');
-                }
-            }
-        }
+  <!-- STAGE 4: Virtual Date Question -->
+  <div id="stage4" class="stage-container hidden">
+    <main class="card">
+      <div class="badge">📅 Special Invitation</div>
+      <h1>One More Thing... 💌</h1>
+      <p class="question">Will you be so kind to accompany me on a virtual date TODAY at 8pm your time? :)</p>
 
-        function moveNoButton() {
-            const noButton = document.getElementById('movingNo');
-            const randomX = Math.random() * (window.innerWidth - 120);
-            const randomY = Math.random() * (window.innerHeight - 50);
-            noButton.style.position = 'absolute';
-            noButton.style.left = randomX + 'px';
-            noButton.style.top = randomY + 'px';
-        }
-    </script>
+      <div class="meter">
+        <div class="meter-label">
+          <span>Probability you say "Yes"</span>
+          <strong id="date-chance">65%</strong>
+        </div>
+        <div class="bar">
+          <div class="fill" id="date-fill" style="width:65%"></div>
+        </div>
+      </div>
 
+      <p class="subtitle" id="date-subtitle">This could be the best decision you make today...</p>
+
+      <div class="buttons" id="date-buttons">
+        <button id="date-yes" class="yes">Yes! I'm In 🎬</button>
+        <button id="date-no" class="no">Let Me Think 🤔</button>
+      </div>
+
+      <p id="date-result" class="result" aria-live="polite"></p>
+    </main>
+  </div>
+
+  <!-- FINAL CELEBRATION -->
+  <div id="final" class="stage-container hidden">
+    <main class="card">
+      <div class="badge">🎊 CELEBRATION TIME! 🎊</div>
+      <h2>WOOO!!! 🥳💞</h2>
+      <p class="finalText">
+        You just made me the happiest human alive! <br />
+        <br />
+        I can't wait for our virtual date at 8pm! 💕 <br />
+        <strong>Dinner + dessert + stargazing together 😌</strong>
+      </p>
+      <button id="finish-btn" class="again">See You Soon! 💫</button>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
