@@ -12,9 +12,10 @@
 </head>
 <body>
     <div id='stage-1'>
-        <h2>Hello my love, are you ready to play a game?</h2>
-        <button onclick='nextStage(1)'>Yes</button>
-        <button onclick='nextStage(2)'>No</button>
+        <h2>Hello my love are you ready to play a game?</h2>
+        <div id='stage-1-message'></div>
+        <button id='stage-1-yes' onclick='startStage2()'>Yes</button>
+        <button id='stage-1-no' onclick='teaseStage1()'>No</button>
     </div>
 
     <div id='stage-2' style='display:none;'>
@@ -26,13 +27,17 @@
     </div>
 
     <div id='stage-3' style='display:none;'>
-        <h2>Well since it's Valentine's day today, I'd like to ask you another question.</h2>
+        <h2>well as you know valentines is TODAY</h2>
     </div>
 
     <div id='stage-4' style='display:none;'>
-        <h2>Will you be so kind to accompany me on a virtual date TODAY at 8pm your time? :)</h2>
-        <button onclick='nextStage(3)'>Yes</button>
-        <button onclick='nextStage(4)'>No</button>
+        <h2>...</h2>
+    </div>
+
+    <div id='stage-5' style='display:none;'>
+        <h2>Will you be so kind to accompany me on a virtual date today at 8pm your time?</h2>
+        <button id='stage-5-yes' onclick='acceptDate()'>Yes</button>
+        <button id='stage-5-no' onclick='rejectDate()'>No</button>
     </div>
 
     <div id='confetti' style='display:none;'>
@@ -42,35 +47,81 @@
 
     <script>
         let percentage = 0;
+        let stage1NoCount = 0;
+        let stage2NoCount = 0;
+        let percentageInterval = null;
 
-        function nextStage(stage) {
-            if (stage === 1) {
-                document.getElementById('stage-1').style.display = 'none';
-                document.getElementById('stage-2').style.display = 'block';
-                startInteractiveFeatures();
-            } else if (stage === 2) {
-                document.getElementById('stage-2').style.display = 'none';
-                document.getElementById('stage-3').style.display = 'block';
-                setTimeout(() => { document.getElementById('stage-3').style.display = 'none'; document.getElementById('stage-4').style.display = 'block'; }, 2000);
-            } else if (stage === 3) {
-                document.getElementById('stage-4').style.display = 'none';
-                document.getElementById('confetti').style.display = 'block';
-                celebrate();
-            }
+        const stage1Lines = [
+            'Just a tiny warm-up 😘',
+            'Come on, say yes and let’s play!',
+            'I promise it’s fun! 🎮💖',
+            'You can’t resist me forever 😉'
+        ];
+
+        const stage2Lines = [
+            'No? Bold. 😭',
+            'That button seems… broken. 🛠️',
+            'You’re really gonna do me like that? 🥺',
+            'Plot twist: you meant YES. 😌',
+            'Okay you’re just here for the mini-game 😂',
+            'Final boss activated. 🎮'
+        ];
+
+        function showStage(stageId) {
+            const stages = ['stage-1', 'stage-2', 'stage-3', 'stage-4', 'stage-5', 'confetti'];
+            stages.forEach((id) => {
+                const stage = document.getElementById(id);
+                stage.style.display = id === stageId ? 'block' : 'none';
+            });
+        }
+
+        function moveNoButton(noButton) {
+            noButton.style.position = 'absolute';
+            noButton.style.top = Math.random() * 300 + 'px';
+            noButton.style.left = Math.random() * 300 + 'px';
+        }
+
+        function startStage2() {
+            document.getElementById('message').innerText = '';
+            showStage('stage-2');
+            startInteractiveFeatures();
+        }
+
+        function teaseStage1() {
+            stage1NoCount += 1;
+            const message = document.getElementById('stage-1-message');
+            message.innerText = stage1Lines[Math.min(stage1NoCount - 1, stage1Lines.length - 1)];
+            moveNoButton(document.getElementById('stage-1-no'));
+        }
+
+        function startPostValentineStages() {
+            showStage('stage-3');
+            setTimeout(() => { showStage('stage-4'); }, 1500);
+            setTimeout(() => { showStage('stage-5'); }, 2400);
         }
 
         function accept() {
             // fun messages
             document.getElementById('message').innerText = 'Yay! You said Yes!';
             increasePercentage();
+            setTimeout(() => { startPostValentineStages(); }, 700);
         }
 
         function reject() {
             // moving button feature
+            stage2NoCount += 1;
             const noButton = document.getElementById('no-button');
-            noButton.style.position = 'absolute';
-            noButton.style.top = Math.random() * 300 + 'px';
-            noButton.style.left = Math.random() * 300 + 'px';
+            document.getElementById('message').innerText = stage2Lines[Math.min(stage2NoCount - 1, stage2Lines.length - 1)];
+            moveNoButton(noButton);
+        }
+
+        function acceptDate() {
+            showStage('confetti');
+            celebrate();
+        }
+
+        function rejectDate() {
+            moveNoButton(document.getElementById('stage-5-no'));
         }
 
         function increasePercentage() {
@@ -84,7 +135,9 @@
         }
 
         function startInteractiveFeatures() {
-            setInterval(() => { if (percentage < 100) increasePercentage(); }, 1000);
+            if (!percentageInterval) {
+                percentageInterval = setInterval(() => { if (percentage < 100) increasePercentage(); }, 1000);
+            }
         }
     </script>
 </body>
