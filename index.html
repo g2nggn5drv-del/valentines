@@ -1,41 +1,93 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valentine's Experience</title>
+    <title>Valentine's Game</title>
     <style>
-        .stage { display: none; }
-        .active { display: block; }
+        body { font-family: Arial, sans-serif; text-align: center; }
+        button { padding: 10px 20px; margin: 20px; }
+        #noButton { position: relative; }
+        #movingNo { animation: move 3s infinite alternate; }
+        @keyframes move {
+            0% { left: 0; }
+            100% { left: calc(100% - 120px); }
+        }
     </style>
 </head>
 <body>
-    <div id="stage1" class="stage active">
+
+    <div id="stage1">
         <h1>Hello my love, are you ready to play a game?</h1>
-        <button onclick="nextStage(2)">Start</button>
+        <button onclick="nextStage(1)">Yes</button>
+        <button onclick="nextStage(1)">No</button>
     </div>
 
-    <div id="stage2" class="stage">
-        <h2>What is your favorite way to spend Valentine's Day?</h2>
-        <button onclick="nextStage(3)">Dinner Date</button>
-        <button onclick="nextStage(3)">Movie Night</button>
-        <button onclick="nextStage(3)">Game Night</button>
+    <div id="stage2" style="display:none;">
+        <h2>Will you be my Valentine?</h2>
+        <button id="yesButton" onclick="nextStage(2)">Yes</button>
+        <button id="movingNo" onmouseover="moveNoButton()">No</button>
+        <div id="meter">Percentage Meter: <span id="percentage">0</span>%</div>
+        <div id="funMessage"></div>
     </div>
 
-    <div id="stage3" class="stage">
-        <h2>If you could choose anywhere for a virtual date, where would it be?</h2>
-        <button onclick="completeGame()">Finish</button>
+    <div id="stage3" style="display:none;">
+        <h3>Well since it's Valentine's day today, I'd like to ask you another question</h3>
+        <button onclick="nextStage(3)">Continue</button>
+    </div>
+
+    <div id="stage4" style="display:none;">
+        <h4>Will you be so kind to accompany me on a virtual date TODAY at 8pm your time? :)</h4>
+        <button onclick="nextStage(4)">Yes</button>
+        <button id="noButton" onmouseover="moveNoButton()">No</button>
+        <div id="dateMeter">Percentage Meter: <span id="datePercentage">0</span>%</div>
+    </div>
+
+    <div id="celebration" style="display:none;">
+        <h1>🎉 Celebration Time! 🎉</h1>
+        <p>Thank you for saying yes to the date!</p>
+        <div>🎊🎊🎊 Confetti Here 🎊🎊🎊</div>
     </div>
 
     <script>
+        let percentage = 0;
+
         function nextStage(stage) {
-            document.querySelector('.active').classList.remove('active');
-            document.getElementById('stage' + stage).classList.add('active');
+            if (stage === 2) {
+                document.getElementById('stage1').style.display = 'none';
+                document.getElementById('stage2').style.display = 'block';
+            }
+            if (stage === 3) {
+                document.getElementById('stage2').style.display = 'none';
+                document.getElementById('stage3').style.display = 'block';
+            }
+            if (stage === 4) {
+                document.getElementById('stage3').style.display = 'none';
+                document.getElementById('stage4').style.display = 'block';
+            }
+            if (stage === 5) {
+                document.getElementById('stage4').style.display = 'none';
+                document.getElementById('celebration').style.display = 'block';
+            }
+            if (stage === 1) {
+                percentage += 20;
+                document.getElementById('percentage').innerText = percentage;
+                document.getElementById('datePercentage').innerText = percentage;
+                if (percentage >= 100) {
+                    alert('You reached 100%!');
+                }
+            }
         }
 
-        function completeGame() {
-            alert('Thank you for playing! Happy Valentine\'s Day!');
+        function moveNoButton() {
+            const noButton = document.getElementById('movingNo');
+            const randomX = Math.random() * (window.innerWidth - 120);
+            const randomY = Math.random() * (window.innerHeight - 50);
+            noButton.style.position = 'absolute';
+            noButton.style.left = randomX + 'px';
+            noButton.style.top = randomY + 'px';
         }
     </script>
+
 </body>
 </html>
